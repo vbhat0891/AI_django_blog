@@ -6,6 +6,7 @@ from django.shortcuts import redirect
 import json
 from watson_developer_cloud import ToneAnalyzerV3
 from watson_developer_cloud import LanguageTranslatorV2 as LanguageTranslator
+from watson_developer_cloud import PersonalityInsightsV3 as PersonalityInsights
 
 
 def post_list(request):
@@ -19,6 +20,12 @@ def post_list(request):
         username='0cf4be9c-cf6a-40a8-917a-765aa80d5652',
         password='FlFKH2OtT24B')
 
+    personality_insights = PersonalityInsights (
+        version= '2017-10-13',
+        username='3c82441d-14f0-4329-ab41-1625d158167b',
+        password='OBRSvTv01pkV',)
+
+
     # print(json.dumps(translation, indent=2, ensure_ascii=False))
 
     for post in posts:
@@ -31,6 +38,7 @@ def post_list(request):
         post.fearScore = post.toneObj2['document_tone']['tone_categories'][0]['tones'][2]['score']
         post.joyScore = post.toneObj2['document_tone']['tone_categories'][0]['tones'][3]['score']
         post.sadScore = post.toneObj2['document_tone']['tone_categories'][0]['tones'][4]['score']
+        # print(post.toneObj2)
 
         translation = language_translator.translate(
             text=post.text,
@@ -43,6 +51,24 @@ def post_list(request):
         post.spanish = post.translation['translation']
         post.word_count = post.obj2['word_count']
         post.character_count = post.obj2['character_count']
+
+        profile = personality_insights.profile(
+            content= post.text,
+            accept='application/json',
+            content_type='text/plain',
+            raw_scores= True)
+        persobj = json.dumps(profile, indent=2)
+        post.persobj2 = json.loads(persobj)
+        post.type0 = post.persobj2['personality'][0]['name']
+        post.rawscore0 = post.persobj2['personality'][0]['raw_score']
+        post.type1 = post.persobj2['personality'][1]['name']
+        post.rawscore1 = post.persobj2['personality'][1]['raw_score']
+        post.type2 = post.persobj2['personality'][2]['name']
+        post.rawscore2 = post.persobj2['personality'][2]['raw_score']
+        post.type3 = post.persobj2['personality'][3]['name']
+        post.rawscore3 = post.persobj2['personality'][3]['raw_score']
+        post.type4 = post.persobj2['personality'][4]['name']
+        post.rawscore4 = post.persobj2['personality'][4]['raw_score']
 
     return render(request, 'blog/post_list.html', {'posts': posts})
 

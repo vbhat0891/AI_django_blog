@@ -17,6 +17,15 @@
           <p> Word count: {{ post.word_count }}</p>
           <p> Character count: {{ post.character_count }}</p>
         </p>
+           <p>Personality Insights:
+           {{ post.type0 }} : {{ post.rawscore0 }} &nbsp;&nbsp;&nbsp;|
+           {{ post.type1 }} : {{ post.rawscore1 }}&nbsp;&nbsp;&nbsp;|<br>
+           {{ post.type2 }} : {{ post.rawscore2 }}&nbsp;&nbsp;&nbsp;|
+           {{ post.type3 }} : {{ post.rawscore3 }}&nbsp;&nbsp;&nbsp;|
+           {{ post.type4 }} : {{ post.rawscore4 }}
+       </p>
+
+       </p>
 
        </div>
    {% endfor %}
