@@ -27,7 +27,7 @@ decorator==4.1.2
 defusedxml==0.5.0
 dj-database-url==0.4.2
 dj-static==0.0.6
-Django==1.10.8
+Django==1.11.28
 django-excel==0.0.9
 django-mathfilters==0.4.0
 django-password-reset==1.0
